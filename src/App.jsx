@@ -13,65 +13,69 @@ function App() {
   ]
 
   const fullAscii = `
-          *******          
-          *******          
-          *******          
-          *******          
-          *******          
-   *********************** 
-   ***     *******     *** 
-   ***     *******     *** 
-   ***     *******     *** 
-   ***     *******     *** 
-   *********************** 
+          *******
+          *******
+          *******
+          *******
+          *******
+   ***********************
+   *     *     *     *   *
+   *  *  *  *  *  *  *   *
+   *  *  *  *  *  *  *   *
+   *  *  *  *  *  *  *   *
+   ***********************
   `.trim()
 
   useEffect(() => {
     if (showResult) {
       let i = 0
       const interval = setInterval(() => {
-        setAsciiText(fullAscii.substring(0, i))
+        setAsciiTextByLines(fullAscii, i)
         i++
-        if (i > fullAscii.length) {
-          clearInterval(interval)
-          triggerFireworks()
-        }
-      }, 10)
+        if (i > 100) { clearInterval(interval); triggerFireworks(); }
+      }, 30)
       return () => clearInterval(interval)
     }
   }, [showResult])
 
+  const setAsciiTextByLines = (text, progress) => {
+    const lines = text.split('\n')
+    const totalChars = text.length
+    const currentChars = Math.floor((progress / 100) * totalChars)
+    setAsciiText(text.substring(0, currentChars))
+  }
+
   const triggerFireworks = () => {
     if (window.confetti) {
-      var duration = 5 * 1000;
-      var animationEnd = Date.now() + duration;
-      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+       const count = 200;
+       const defaults = {
+         origin: { y: 0.7 }
+       };
 
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
+       function fire(particleRatio, opts) {
+         window.confetti({
+           ...defaults,
+           ...opts,
+           particleCount: Math.floor(count * particleRatio)
+         });
+       }
 
-      var interval = setInterval(function() {
-        var timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        var particleCount = 50 * (timeLeft / duration);
-        // since particles fall down, start a bit higher than random
-        window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-        window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-      }, 250);
+       fire(0.25, { spread: 26, startVelocity: 55, });
+       fire(0.2, { spread: 60, });
+       fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+       fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+       fire(0.1, { spread: 120, startVelocity: 45, });
     }
   }
 
   const handleNext = () => {
     if (step < questions.length - 1) {
       setStep(step + 1)
-    } else {
-      setShowResult(true)
     }
+  }
+
+  const handleShowAnswer = () => {
+    setShowResult(true)
   }
 
   return (
@@ -80,8 +84,14 @@ function App() {
         <div className="card fade-in" key={step}>
           <h1>{questions[step]}</h1>
           <div className="buttons">
-            <button className="primary" onClick={handleNext}>نعم</button>
-            <button onClick={handleNext}>لا</button>
+            {step < 2 ? (
+              <>
+                <button className="primary" onClick={handleNext}>نعم</button>
+                <button onClick={handleNext}>لا</button>
+              </>
+            ) : (
+              <button className="primary" onClick={handleShowAnswer}>عرض الإجابة</button>
+            )}
           </div>
         </div>
       ) : (

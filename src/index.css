@@ -17,8 +17,6 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background: radial-gradient(circle at center, #1a1a2e 0%, #050505 100%);
@@ -27,10 +25,6 @@ body {
 
 #root {
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 .card {
@@ -41,7 +35,9 @@ body {
   padding: 3rem;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
   max-width: 500px;
+  width: 100%;
   margin: 0 auto;
+  text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -56,10 +52,17 @@ body {
   height: 200%;
   background: conic-gradient(
     transparent,
-    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05),
     transparent 30%
   );
   animation: rotate 10s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes rotate {
@@ -125,6 +128,8 @@ button.primary:hover {
   margin-top: 2rem;
   color: #ff3e00;
   text-shadow: 0 0 10px rgba(255, 62, 0, 0.5);
+  display: inline-block;
+  text-align: left; /* Keep ASCII internal alignment but center the block */
   animation: pulse 2s infinite;
 }
 

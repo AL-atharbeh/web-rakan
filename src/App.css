@@ -1,10 +1,12 @@
-/* App.css is mostly empty as core styles are in index.css */
+/* App.css */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .result-card {
@@ -13,4 +15,14 @@
     flex-direction: column;
     align-items: center;
     border-color: #ff3e00;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 2rem 1.5rem;
+    width: 90%;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
 }
