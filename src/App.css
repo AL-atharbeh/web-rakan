@@ -1,0 +1,16 @@
+/* App.css is mostly empty as core styles are in index.css */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.result-card {
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-color: #ff3e00;
+}
